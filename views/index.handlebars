@@ -1,0 +1,156 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>carDB</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <button class="btn btn-success" data-toggle="modal" data-target="#modalAdd">Add a car</button>
+    <table class="table table-striped" id="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Brand</th>
+            <th>Make</th>
+            <th>Year</th>
+            <th> </th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each results}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{brand}}</td>
+            <td>{{make}}</td>
+            <td>{{year}}</td>
+            <td>
+                <a href="javascript:void(0);" class="btn btn-sm btn-info edit" data-id="{{ id }}" data-make="{{ make }}" data-brand="{{ brand }}" data-year="{{ year}}">Edit</a>
+                <a href="javascript:void(0);" class="btn btn-sm btn-danger delete" data-id="{{ id }}">Delete</a>
+
+            </td>
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+
+      <form action="/save" method="post">
+            <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+             <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                 <div class="modal-header">
+                   <h5 class="modal-title" id="exampleModalLabel">Add New Car</h5>
+                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                   </button>
+                 </div>
+                 <div class="modal-body">
+                   <div class="form-group">
+                       <input type="text" name="brand" class="form-control" placeholder="Manufacturer" required>
+                   </div>
+     
+                   <div class="form-group">
+                       <input type="text" name="make" class="form-control" placeholder="Make" required>
+                   </div>
+
+                    <div class="form-group">
+                        <input type="number" name = "year" class="form-control" placeholder="Year" required>
+                    </div>
+
+                 </div>
+                 <div class="modal-footer">
+                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                   <button type="submit" class="btn btn-primary">Save</button>
+                 </div>
+               </div>
+             </div>
+            </div>
+         </form>
+
+
+   <form action="/update" method="post">
+           <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Edit Car Info</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                      <input type="text" name="brand" class="form-control brand" placeholder="Manufacturer" required>
+                  </div>
+     
+                  <div class="form-group">
+                      <input type="text" name="make" class="form-control make" placeholder="Model" required>
+                  </div>
+
+     <div class="form-group">
+                      <input type="number" name="year" class="form-control year" placeholder="Year" required>
+                  </div>
+
+
+                </div>
+                <div class="modal-footer">
+                  <input type="hidden" name="id" class="id">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+              </div>
+            </div>
+           </div>
+      </form>
+
+ <form id="add-row-form" action="/delete" method="post">
+             <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                                            <h5 class="modal-title" id="myModalLabel">Delete Car</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                       </div>
+                       <div class="modal-body">
+                                                     <strong>Are you sure you want to delete this data?</strong>
+                       </div>
+                       <div class="modal-footer">
+                                                <input type="hidden" name="id" class="form-control id2" required>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success">Delete</button>
+                       </div>
+                        </div>
+                </div>
+             </div>
+         </form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script>
+    $('#table').on('click','.edit',function(){
+        var id = $(this).data('id');
+        var brand = $(this).data('brand');
+        var make = $(this).data('make');
+        var year = $(this).data('year');
+        $('#EditModal').modal('show');
+        $('.brand').val(brand);
+        $('.make').val(make);
+        $('.year').val(year);
+        $('.id').val(id);
+    });
+    //showing delete record modal
+    $('#table').on('click','.delete',function(){
+        var id = $(this).data('id');
+        $('#DeleteModal').modal('show');
+        $('.id2').val(id);
+    });
+</script>
+
+
+</body>
+
+
+
+</html>
